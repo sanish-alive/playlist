@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pomodoro Timer</title>
+    <link href="https://fonts.googleapis.com/css?family=Lato:400,700%7CMerriweather:300,700%7CSource+Code+Pro:400,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.13.0/css/all.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../static/css/style.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/darktheme.css">
+    <link rel="stylesheet" type="text/css" href="../static/css/pomodoro.css">
+    <link rel="icon" type="image/png" href="../static/image/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="../static/image/favicon-16x16.png" sizes="16x16">
+</head>
+<body class="colorscheme-dark" onload>
+
+    <nav class="navigation">
+        <section class="container">
+        <a class="navigation-title" href="https://sanishrestha.com.np/">
+        Sanish Shrestha
+        </a>
+        <span id="dark-mode-toggle" class="float-right">
+            <i class="fas fa-adjust fa-fw"></i>
+        </span>
+        <input type="checkbox" id="menu-toggle" />
+        <label class="menu-button float-right" for="menu-toggle">
+            <i class="fas fa-bars fa-fw"></i>
+        </label>
+        <ul class="navigation-list">
+            <li class="navigation-item">
+                <a class="navigation-link" href="about.html">About</a>
+            </li>
+            <li class="navigation-item">
+                <a class="navigation-link" href="project.html">Projects</a>
+            </li>
+            <li class="navigation-item">
+                <a class="navigation-link" href="pomodoro.html">Pomodoro</a>
+            </li>
+            <li class="navigation-item separator">
+                <span>|</span>
+            </li>
+        </ul>
+        </section>
+    </nav>
+<div class="pomodoro-container">
+    <input type="number" placeholder="Enter Time" id="time" value="25"><br>
+    <div id="timer" style="display: none;">
+        <span id="minutes">--</span><span>:</span></span><span id="seconds" style="width: 50px;">--</span>
+    </div>
+    <div class="pomodoro-button">
+        <button onclick="startPomodoro()" id="startBtn">Start</button>
+        <button onclick="stopPomodoro()" id="stopBtn" style="display: none;"><i class="fas fa-stop"></i></button>
+        <button onclick="pausePomodoro()" id="pauseBtn" style="display: none;"><i class="fas fa-pause"></i></button>
+    </div>
+</div>
+    
+</body>
+<script>
+    let timer;
+    let isPaused = false;
+    
+
+    function startPomodoro() {
+        let timerDiv = document.getElementById('timer');
+        let timeInput = document.getElementById('time');
+        let startButton = document.getElementById('startBtn');
+        let stopButton = document.getElementById('stopBtn');
+        let pauseButton = document.getElementById('pauseBtn')
+
+        timeInput.style.display = "none";
+        timerDiv.style.display = "block";
+
+        startButton.style.display = "none";
+        stopButton.style.display = "initial";
+        pauseButton.style.display = "initial";
+
+        let takeTime = document.getElementById('time').value;
+        let minutes = parseInt(takeTime, 10) - 1;
+        let seconds = 60;
+
+        clearInterval(timer);
+
+        timer = setInterval(function() {
+            if(isPaused) return;
+            if(seconds === 0) {
+                seconds = 60
+                if(minutes === 0) {
+                    clearInterval(timer);
+                    isPaused = false;
+                    playSound();
+                    timeInput.style.display = "block";
+                    timerDiv.style.display = "none";
+                    startButton.style.display = "block";
+                    stopButton.style.display = "none";
+                    pauseButton.style.display = "none";
+                    return;
+                } else {
+                    minutes--;
+                }
+            } else {
+                seconds--;
+            }
+
+            document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
+            document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
+            document.title = minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0')
+        }, 1000)
+    }
+
+    function stopPomodoro(){
+        clearInterval(timer);
+
+        let timeInput = document.getElementById('time');
+        let timerDiv = document.getElementById('timer');
+        timeInput.style.display = "block";
+        timerDiv.style.display = "none";
+        document.getElementById('startBtn').style.display = "initial";
+        document.getElementById('stopBtn').style.display = "none";
+        document.getElementById('pauseBtn').style.display = "none";
+        document.title = "Timer Stopped";
+    }
+
+    function pausePomodoro() {
+        isPaused = !isPaused;
+
+        if(isPaused) {
+            document.title = "Timer Paused";
+            document.getElementById('pauseBtn').innerHTML = '<i class="fas fa-play"></i>';
+        } else {
+            document.getElementById('pauseBtn').innerHTML = '<i class="fas fa-pause"></i>';
+            document.title = minutes.toString().padStart(2, '0') + ":" + seconds.toString().padStart(2, '0')
+        }
+    }
+
+    function playSound() {
+        var sound = new Audio('inclouds.mp3');
+        sound.play();
+
+        setTimeout(function() {
+            sound.pause();
+            sound.currentTime = 0;
+        }, 4000);
+    }
+</script>
+<script src="../static/js/darktheme.js"></script>
+
+</html>
