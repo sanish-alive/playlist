@@ -44,7 +44,7 @@
         </section>
     </nav>
 <div class="pomodoro-container">
-    <input type="number" placeholder="Enter Time" id="time" value="25"><br>
+    <input type="number" id="time" value="25"><br>
     <div id="timer" style="display: none;">
         <span id="minutes">--</span><span>:</span></span><span id="seconds" style="width: 50px;">--</span>
     </div>
@@ -95,12 +95,10 @@
                     stopButton.style.display = "none";
                     pauseButton.style.display = "none";
                     return;
-                } else {
-                    minutes--;
                 }
-            } else {
-                seconds--;
-            }
+                minutes--;
+            } 
+            seconds--;
 
             document.getElementById('minutes').textContent = minutes.toString().padStart(2, '0');
             document.getElementById('seconds').textContent = seconds.toString().padStart(2, '0');
