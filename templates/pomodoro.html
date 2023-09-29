@@ -34,9 +34,6 @@
             <li class="navigation-item">
                 <a class="navigation-link" href="project.html">Projects</a>
             </li>
-            <li class="navigation-item">
-                <a class="navigation-link" href="pomodoro.html">Pomodoro</a>
-            </li>
             <li class="navigation-item separator">
                 <span>|</span>
             </li>
@@ -44,9 +41,9 @@
         </section>
     </nav>
 <div class="pomodoro-container">
-    <input type="number" id="time" value="25"><br>
+    <input type="text" id="time" value="25"><br>
     <div id="timer" style="display: none;">
-        <span id="minutes">--</span><span>:</span></span><span id="seconds" style="width: 50px;">--</span>
+        <span id="minutes">--</span><span>:</span></span><span id="seconds">--</span>
     </div>
     <div class="pomodoro-button">
         <button onclick="startPomodoro()" id="startBtn">Start</button>
@@ -80,6 +77,11 @@
         let seconds = 60;
 
         clearInterval(timer);
+
+        if(isNaN(minutes) || minutes < 0) {
+            alert("Enter valid input.");
+            stopPomodoro();
+        }
 
         timer = setInterval(function() {
             if(isPaused) return;
